@@ -11,34 +11,31 @@ import axios from "axios";
 //     );
 //   };   FORMA IMPLICITA
 
-export const RandomFox = (): JSX.Element => {
-  const [url, setUrl] = useState("");
+type Props = { urlAp: string; number: number };
+
+export const RandomFox = ({ urlAp, number }: Props) => {
+  const [urls, setUrls] = useState<string[]>([]);
+  const title: string = `Imagen #${number}`;
+  console.log(title);
 
   useEffect(() => {
+    console.log("init axios");
     axios({
       method: "GET",
-      url: "https://randomfox.ca/floof/",
+      url: urlAp,
     })
       .then((res) => {
         console.log(res);
-        setUrl(res.data.image);
+        setUrls((prev) => [...prev, res.data.image]);
       })
       .catch((e) => {
         console.log(e);
       });
-  }, []);
+  }, [number]);
 
-  return (
-    <>
-      <img
-        width={320}
-        height="auto"
-        className="rounded"
-        src={url}
-        alt="Imagen Zorro"
-      />
-    </>
-  );
+  return {
+    urls,
+  };
 }; //FORMA EXPLICITA(La recomendada)
 
 // export const RandomFox: FunctionComponent = (): JSX.Element => {
